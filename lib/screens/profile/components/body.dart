@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
-import 'package:life_point/controllers/auth/auth.dart';
-import 'package:life_point/controllers/controllers.dart';
-import 'package:life_point/models/usuario_model.dart';
-import 'package:life_point/screens/widgets/avatar.dart';
+import 'package:life_point_empleado/controllers/auth/auth.dart';
+import 'package:life_point_empleado/controllers/controllers.dart';
+import 'package:life_point_empleado/models/empleado_model.dart';
+import 'package:life_point_empleado/screens/widgets/avatar.dart';
 
 class BodyProfile extends StatefulWidget {
   const BodyProfile({Key key}) : super(key: key);
@@ -17,15 +17,18 @@ class _BodyProfileState extends State<BodyProfile>
     with SingleTickerProviderStateMixin, Auth {
   bool _status = true;
   final HomeController _controller = Get.find();
-  UsuarioModel _usuarioModel = UsuarioModel();
+  EmpleadoModel _empleadoModel = EmpleadoModel();
   @override
   void initState() {
-    nameController.text = _controller?.currerUserModel?.nombre;
-    lastnameController.text = _controller?.currerUserModel?.apellido;
-    emailController.text = _controller?.currerUserModel?.email;
-    phoneNumberController.text = _controller?.currerUserModel?.telefono;
-    ciController.text = _controller?.currerUserModel?.credencial;
-    directionController.text = _controller?.currerUserModel?.direccion;
+    nameController.text = _controller?.currerEmpleadoModel?.nombre;
+    lastnameController.text = _controller?.currerEmpleadoModel?.apellido;
+    emailController.text = _controller?.currerEmpleadoModel?.email;
+    phoneNumberController.text = _controller?.currerEmpleadoModel?.telefono;
+    ciController.text = _controller?.currerEmpleadoModel?.credencial;
+    directionController.text = _controller?.currerEmpleadoModel?.direccion;
+    empresaController.text = _controller?.currerEmpleadoModel?.empresa;
+    descripcionController.text = _controller?.currerEmpleadoModel?.descripcion;
+    tarifaController.text = _controller?.currerEmpleadoModel?.tarifa.toString();
     super.initState();
   }
 
@@ -39,7 +42,7 @@ class _BodyProfileState extends State<BodyProfile>
               Avatar(),
               Text("¡Hola!"),
               Text(
-                _controller?.currerUserModel?.usuario,
+                _controller?.currerEmpleadoModel?.usuario,
                 style: TextStyle(fontSize: 20, letterSpacing: 1.5),
               ),
               Container(
@@ -204,20 +207,26 @@ class _BodyProfileState extends State<BodyProfile>
                                         textColor: Colors.white,
                                         color: Colors.green,
                                         onPressed: () {
-                                          _usuarioModel.nombre =
+                                          _empleadoModel.nombre =
                                               nameController.text;
-                                          _usuarioModel.apellido =
+                                          _empleadoModel.apellido =
                                               lastnameController.text;
-                                          _usuarioModel.email =
+                                          _empleadoModel.email =
                                               emailController.text;
-                                          _usuarioModel.telefono =
+                                          _empleadoModel.telefono =
                                               phoneNumberController.text;
-                                          _usuarioModel.credencial =
+                                          _empleadoModel.credencial =
                                               ciController.text;
-                                          _usuarioModel.direccion =
+                                          _empleadoModel.direccion =
                                               directionController.text;
+                                          _empleadoModel.descripcion =
+                                              descripcionController.text;
+                                          _empleadoModel.tarifa = double.parse(
+                                              tarifaController.text);
+                                          _empleadoModel.empresa =
+                                              empresaController.text;
                                           _controller
-                                              .updateUsuario(_usuarioModel);
+                                              .updateEmpleado(_empleadoModel);
                                           setState(() {
                                             _status = true;
                                           });

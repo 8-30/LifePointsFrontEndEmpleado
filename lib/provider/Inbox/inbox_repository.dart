@@ -1,5 +1,5 @@
-import 'package:life_point/models/inbox_model.dart';
-import 'package:life_point/provider/inbox/inbox_provider.dart';
+import 'package:life_point_empleado/models/inbox_model.dart';
+import 'package:life_point_empleado/provider/inbox/inbox_provider.dart';
 
 class InboxRepository {
   InboxApiProvider _apiProvider = InboxApiProvider();

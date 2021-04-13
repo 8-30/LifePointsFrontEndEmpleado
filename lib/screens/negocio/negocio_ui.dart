@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:life_point_empleado/screens/profile/components/body.dart';
+import 'package:life_point_empleado/screens/negocio/components/body.dart';
 
-class ProfileUI extends StatelessWidget {
-  const ProfileUI({Key key}) : super(key: key);
+class NegocioUI extends StatelessWidget {
+  const NegocioUI({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class ProfileUI extends StatelessWidget {
         title: Text("Perfil de Usuario"),
         centerTitle: true,
       ),
-      body: BodyProfile(),
+      body: BodyNegocio(),
     );
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:life_point/models/inbox_model.dart';
-import 'package:life_point/models/mensaje_model.dart';
-import 'package:life_point/models/person_model.dart';
-import 'package:life_point/provider/Inbox/inbox_repository.dart';
-import 'package:life_point/screens/chat/inbox/components/widgets/chat_card.dart';
+import 'package:life_point_empleado/models/inbox_model.dart';
+import 'package:life_point_empleado/models/mensaje_model.dart';
+import 'package:life_point_empleado/models/person_model.dart';
+import 'package:life_point_empleado/provider/Inbox/inbox_repository.dart';
+import 'package:life_point_empleado/screens/chat/inbox/components/widgets/chat_card.dart';
 
 class ChatBody extends StatefulWidget {
   final PersonaModel persona;

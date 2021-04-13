@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
 import 'package:flutter_socket_io/socket_io_manager.dart';
 import 'package:get/instance_manager.dart';
-import 'package:life_point/controllers/home/home_controller.dart';
-import 'package:life_point/models/mensaje_model.dart';
-import 'package:life_point/models/person_model.dart';
-import 'package:life_point/provider/mensaje/mensaje_repository.dart';
+import 'package:life_point_empleado/controllers/home/home_controller.dart';
+import 'package:life_point_empleado/models/mensaje_model.dart';
+import 'package:life_point_empleado/models/person_model.dart';
+import 'package:life_point_empleado/provider/mensaje/mensaje_repository.dart';
 
 class ChatCard extends StatefulWidget {
   final PersonaModel persona;
@@ -124,7 +124,7 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
       _isWriting = false;
     });
     Msg msg = new Msg(
-      emisor: homeController.currerUserModel.nombre,
+      emisor: homeController.currerEmpleadoModel.nombre,
       enviado: true,
       txt: txt,
       animationController: new AnimationController(
@@ -146,7 +146,7 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
   }
 
   _cargarMsg() {
-    String emisor = homeController.currerUserModel.nombre;
+    String emisor = homeController.currerEmpleadoModel.nombre;
     bool enviado = true;
     //esto se pude mejorar
     _messages = <Msg>[];
@@ -157,7 +157,7 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
             emisor = persona.nombre;
             enviado = false;
           } else {
-            emisor = homeController.currerUserModel.nombre;
+            emisor = homeController.currerEmpleadoModel.nombre;
             enviado = true;
           }
           Msg msg = new Msg(

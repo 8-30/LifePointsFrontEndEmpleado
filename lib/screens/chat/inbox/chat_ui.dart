@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:life_point/models/person_model.dart';
-import 'package:life_point/screens/chat/inbox/components/body.dart';
+import 'package:life_point_empleado/models/person_model.dart';
+import 'package:life_point_empleado/screens/chat/inbox/components/body.dart';
 
 class ChatUI extends StatelessWidget {
   final PersonaModel persona;

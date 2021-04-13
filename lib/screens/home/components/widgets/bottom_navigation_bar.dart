@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:life_point/screens/chat/list_inbox/list_inbox_ui.dart';
-import 'package:life_point/screens/profile/profile_ui.dart';
+import 'package:life_point_empleado/screens/chat/list_inbox/list_inbox_ui.dart';
+import 'package:life_point_empleado/screens/negocio/negocio_ui.dart';
+import 'package:life_point_empleado/screens/profile/profile_ui.dart';
 
 class BottomNavigationBarTravel extends StatefulWidget {
   @override
@@ -29,6 +30,11 @@ class _BottomNavigationBarTravelState extends State<BottomNavigationBarTravel> {
       case 2:
         print("go profile");
         Get.to(() => ProfileUI(), transition: Transition.fadeIn);
+        _selectedIndex = 0;
+        break;
+      case 3:
+        print("go bussines");
+        Get.to(() => NegocioUI(), transition: Transition.fadeIn);
         _selectedIndex = 0;
         break;
       default:
@@ -61,6 +67,12 @@ class _BottomNavigationBarTravelState extends State<BottomNavigationBarTravel> {
                 ? Icon(Icons.circle)
                 : Icon(Icons.account_box_outlined),
             label: "Perfil",
+          ),
+          BottomNavigationBarItem(
+            icon: _selectedIndex == 3
+                ? Icon(Icons.apartment)
+                : Icon(Icons.apartment),
+            label: "Empresa",
           ),
         ],
         currentIndex: _selectedIndex,

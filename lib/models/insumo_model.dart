@@ -3,14 +3,14 @@ class InsumoModel {
   int idInsumoEmpleado;
   String nombre;
   double tarifa;
-  String description;
+  String descripcion;
 
   InsumoModel({
     this.idInsumo,
     this.idInsumoEmpleado,
     this.nombre,
     this.tarifa,
-    this.description,
+    this.descripcion,
   });
 
   static InsumoModel fromJson(Map<String, dynamic> json) {
@@ -19,7 +19,7 @@ class InsumoModel {
       idInsumoEmpleado: json['idInsumoEmpleado'],
       nombre: json['nombre'],
       tarifa: json['tarifa'],
-      description: json['description'],
+      descripcion: json['descripcion'],
     );
   }
 
@@ -28,6 +28,6 @@ class InsumoModel {
         "idInsumoEmpleado": idInsumoEmpleado,
         "nombre": nombre,
         "tarifa": tarifa,
-        "description": description,
+        "descripcion": descripcion,
       };
 }

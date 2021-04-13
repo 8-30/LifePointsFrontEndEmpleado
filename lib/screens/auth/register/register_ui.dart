@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:life_point/screens/auth/register/components/body.dart';
+import 'package:life_point_empleado/screens/auth/register/components/body.dart';
 
 class RegisterUI extends StatelessWidget {
   const RegisterUI({Key key}) : super(key: key);

@@ -3,37 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:life_point/models/usuario_model.dart';
-import 'package:life_point/provider/usuario/usuario_repository.dart';
-import 'package:life_point/screens/ui.dart';
+import 'package:life_point_empleado/models/empleado_model.dart';
+import 'package:life_point_empleado/provider/empleado/empleado_repository.dart';
+import 'package:life_point_empleado/screens/ui.dart';
 
 class HomeController extends GetxController {
-  final UsuarioRepository usuarioRepository = UsuarioRepository();
-  final userID = GetStorage();
-  int currentUserId;
-  UsuarioModel currerUserModel;
+  final EmpleadoRepository empleadoRepository = EmpleadoRepository();
+  final empleadoID = GetStorage();
+  int currentEmpleadoId;
+  EmpleadoModel currerEmpleadoModel;
 
   @override
   void onInit() {
-    currentUserId = userID.read("usuarioID");
+    currentEmpleadoId = empleadoID.read("empleadoID");
     super.onInit();
   }
 
   @override
   void onReady() {
-    getCurrentUser();
+    getCurrentEmpleado();
     super.onReady();
   }
 
-  void howCurrentUser() {
+  void howCurrentEmpleado() {
     Get.snackbar(
         "ID USER AUTENTICADO",
         "HOLA: " +
-            currerUserModel.nombre +
+            currerEmpleadoModel.nombre +
             " " +
-            currerUserModel.apellido +
+            currerEmpleadoModel.apellido +
             " ID: " +
-            currentUserId.toString(),
+            currentEmpleadoId.toString(),
         icon: Icon(
           Icons.info,
           color: Colors.red,
@@ -42,22 +42,28 @@ class HomeController extends GetxController {
   }
 
   void logOut() {
-    userID.remove("usuarioID").then((value) => Get.offAll(() => LoginUI()));
+    empleadoID
+        .remove("empleadoID")
+        .then((value) => Get.offAll(() => LoginUI()));
   }
 
-  void getCurrentUser() async {
-    currerUserModel = await usuarioRepository.getCurrentUsuario(currentUserId);
+  void getCurrentEmpleado() async {
+    currerEmpleadoModel =
+        await empleadoRepository.getEmpleado(currentEmpleadoId);
   }
 
-  void updateUsuario(UsuarioModel model) async {
-    currerUserModel.nombre = model.nombre;
-    currerUserModel.apellido = model.apellido;
-    currerUserModel.email = model.email;
-    currerUserModel.telefono = model.telefono;
-    currerUserModel.credencial = model.credencial;
-    currerUserModel.direccion = model.direccion;
-    final data = await usuarioRepository.putUsuario(currerUserModel);
-    if (!data) {
+  void updateEmpleado(EmpleadoModel model) async {
+    currerEmpleadoModel.nombre = model.nombre;
+    currerEmpleadoModel.apellido = model.apellido;
+    currerEmpleadoModel.email = model.email;
+    currerEmpleadoModel.telefono = model.telefono;
+    currerEmpleadoModel.credencial = model.credencial;
+    currerEmpleadoModel.direccion = model.direccion;
+    currerEmpleadoModel.descripcion = model.descripcion;
+    currerEmpleadoModel.empresa = model.empresa;
+    currerEmpleadoModel.tarifa = model.tarifa;
+    final data = await empleadoRepository.putEmpleado(currerEmpleadoModel);
+    if (data == null) {
       Get.snackbar("ERROR", "NO SE PUDO ACTUALIZAR EL USUARIO",
           icon: Icon(
             Icons.error,

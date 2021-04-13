@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
-import 'package:life_point/controllers/controllers.dart' show AuthController;
-import 'package:life_point/screens/ui.dart';
-import 'package:life_point/screens/widgets/TextFormFieldWithIcon.dart';
-import 'package:life_point/screens/widgets/avatar.dart';
+import 'package:life_point_empleado/controllers/controllers.dart'
+    show AuthController;
+import 'package:life_point_empleado/screens/ui.dart';
+import 'package:life_point_empleado/screens/widgets/TextFormFieldWithIcon.dart';
+import 'package:life_point_empleado/screens/widgets/avatar.dart';
 
 class BodyLogin extends StatelessWidget {
   final AuthController _controller = Get.find();

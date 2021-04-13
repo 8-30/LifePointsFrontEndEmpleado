@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:life_point/models/inbox_model.dart';
+import 'package:life_point_empleado/models/inbox_model.dart';
 
 class InboxApiProvider {
   final String _endpoint = "http://lifepoints.herokuapp.com/api/inbox/";

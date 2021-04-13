@@ -1,4 +1,4 @@
-# life_point
+# life_point_empleado
 
 A new Flutter project.
 

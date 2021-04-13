@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:life_point/models/person_model.dart';
-import 'package:life_point/models/usuario_model.dart';
+import 'package:life_point_empleado/models/person_model.dart';
+import 'package:life_point_empleado/models/usuario_model.dart';
 
 class UsuarioApiProvider {
   final String _endpoint = "http://lifepoints.herokuapp.com/api/usuario/";

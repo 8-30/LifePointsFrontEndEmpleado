@@ -1,6 +1,6 @@
-import 'package:life_point/models/mensaje_model.dart';
+import 'package:life_point_empleado/models/mensaje_model.dart';
 
-import 'package:life_point/provider/mensaje/mensaje_provider.dart';
+import 'package:life_point_empleado/provider/mensaje/mensaje_provider.dart';
 
 class MensajeRepository {
   MensajeApiProvider _apiProvider = MensajeApiProvider();

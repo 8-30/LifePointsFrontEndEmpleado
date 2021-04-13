@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:life_point/screens/ui.dart';
+import 'package:life_point_empleado/screens/ui.dart';
 import 'controllers/controllers.dart';
 
 void main() async {
@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
         'login': (BuildContext context) => LoginUI(),
         'register': (BuildContext context) => RegisterUI(),
         'home': (BuildContext context) => HomeUI(),
-        'solicitar-servicio': (BuildContext context) => SolicitarServicioUI()
       },
     );
   }

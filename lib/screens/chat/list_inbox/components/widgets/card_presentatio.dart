@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:life_point/models/inbox_model.dart';
-import 'package:life_point/models/person_model.dart';
-import 'package:life_point/screens/chat/inbox/chat_ui.dart';
+import 'package:life_point_empleado/models/inbox_model.dart';
+import 'package:life_point_empleado/models/person_model.dart';
+import 'package:life_point_empleado/screens/chat/inbox/chat_ui.dart';
 
 class CardPresentation extends StatefulWidget {
   final InboxModel inbox;

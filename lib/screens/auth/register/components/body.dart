@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:life_point/screens/widgets/TextFormFieldWithIcon.dart';
+import 'package:life_point_empleado/screens/widgets/TextFormFieldWithIcon.dart';
 import 'package:get/instance_manager.dart';
-import 'package:life_point/controllers/controllers.dart' show AuthController;
+import 'package:life_point_empleado/controllers/controllers.dart'
+    show AuthController;
 
 class BodyRegister extends StatefulWidget {
   @override

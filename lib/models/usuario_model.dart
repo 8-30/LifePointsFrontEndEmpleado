@@ -1,4 +1,4 @@
-import 'package:life_point/models/person_model.dart';
+import 'package:life_point_empleado/models/person_model.dart';
 
 class UsuarioModel extends PersonaModel {
   int idUsuario;

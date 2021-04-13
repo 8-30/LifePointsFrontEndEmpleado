@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:life_point/models/mensaje_model.dart';
+import 'package:life_point_empleado/models/mensaje_model.dart';
 
 class MensajeApiProvider {
   final String _endpoint = "http://lifepoints.herokuapp.com/api/mensaje/";

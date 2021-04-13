@@ -11,4 +11,7 @@ class Auth {
   TextEditingController birthController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController gender = TextEditingController();
+  TextEditingController empresaController = TextEditingController();
+  TextEditingController descripcionController = TextEditingController();
+  TextEditingController tarifaController = TextEditingController();
 }

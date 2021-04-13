@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:life_point/models/insumo_model.dart';
+import 'package:life_point_empleado/models/insumo_model.dart';
 
 class InsumoApiProvider {
   final String _endpoint = "http://lifepoints.herokuapp.com/api/insumo/";
@@ -44,6 +44,35 @@ class InsumoApiProvider {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return null;
+    }
+  }
+
+  Future<InsumoModel> postInsumo(
+      int idEmpleado, String nombre, double tarifa) async {
+    try {
+      print("yeaaaaa" + idEmpleado.toString());
+      InsumoModel insumo = new InsumoModel(
+          idInsumo: null,
+          idInsumoEmpleado: idEmpleado,
+          nombre: nombre,
+          tarifa: tarifa,
+          descripcion: "Ninguna");
+      print(insumo.toJson());
+      await _dio.post(_endpoint, data: insumo.toJson());
+      return null;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+  void updateInsumo(InsumoModel model) async {
+    try {
+      print(_endpoint + model.idInsumo.toString());
+      Response response = await _dio.put(_endpoint + model.idInsumo.toString(),
+          data: model.toJson());
+    } catch (error) {
+      print("Exception occured: $error");
     }
   }
 }
