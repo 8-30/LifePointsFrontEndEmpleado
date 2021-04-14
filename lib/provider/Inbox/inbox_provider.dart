@@ -25,8 +25,9 @@ class InboxApiProvider {
     try {
       Response response =
           await _dio.get(_endpoint + "persona/" + id.toString());
-      print(response.data["inboxs"]);
+
       for (var data in response.data["inbox"]) {
+        print(data);
         inboxList.add(InboxModel.fromJson(data));
       }
       return inboxList;

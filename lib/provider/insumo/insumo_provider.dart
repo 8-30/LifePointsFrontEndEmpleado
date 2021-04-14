@@ -69,7 +69,7 @@ class InsumoApiProvider {
   void updateInsumo(InsumoModel model) async {
     try {
       print(_endpoint + model.idInsumo.toString());
-      Response response = await _dio.put(_endpoint + model.idInsumo.toString(),
+      await _dio.put(_endpoint + model.idInsumo.toString(),
           data: model.toJson());
     } catch (error) {
       print("Exception occured: $error");

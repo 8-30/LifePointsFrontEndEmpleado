@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
-import 'package:get_storage/get_storage.dart';
+
 import 'package:life_point_empleado/controllers/controllers.dart';
-import 'package:life_point_empleado/models/empleado_model.dart';
+
 import 'package:life_point_empleado/models/inbox_model.dart';
 import 'package:life_point_empleado/models/mensaje_model.dart';
+import 'package:life_point_empleado/models/usuario_model.dart';
 import 'package:life_point_empleado/provider/Inbox/inbox_repository.dart';
-import 'package:life_point_empleado/provider/empleado/empleado_repository.dart';
 import 'package:life_point_empleado/provider/mensaje/mensaje_repository.dart';
+import 'package:life_point_empleado/provider/usuario/usuario_repository.dart';
 import 'package:life_point_empleado/screens/chat/list_inbox/components/widgets/card_presentatio.dart';
 
 class BodyListInbox extends StatefulWidget {
@@ -19,20 +20,19 @@ class BodyListInbox extends StatefulWidget {
 
 class _BodyListInboxState extends State<BodyListInbox> {
   InboxRepository _inboxRepository = InboxRepository();
-  EmpleadoRepository _empleadoRepository = EmpleadoRepository();
+  UsuarioRepository _usuarioRepository = UsuarioRepository();
   MensajeRepository _mensajeRepository = MensajeRepository();
   List<MensajeModel> mensajes = List<MensajeModel>();
-  int idCliente;
   int idEmpleado;
+  int idCliente1;
   String emisor;
   String nombreCliente;
-  final usuarioIDStorage = GetStorage();
   final HomeController homeController = Get.find();
 
   void initState() {
-    idCliente = usuarioIDStorage.read("empledoID");
-    nombreCliente = homeController.currerEmpleadoModel.nombre;
-    idEmpleado = 1;
+    idEmpleado = homeController?.currerEmpleadoModel?.idEmpleado;
+    nombreCliente = homeController?.currerEmpleadoModel?.nombre;
+    idCliente1 = 1;
 
     super.initState();
   }
@@ -43,22 +43,23 @@ class _BodyListInboxState extends State<BodyListInbox> {
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
             child: FutureBuilder(
-                future: _inboxRepository.getInboxPersona(idCliente),
+                future: _inboxRepository.getInboxPersona(idEmpleado),
                 builder: (context, AsyncSnapshot<List<InboxModel>> snapshot) {
                   return snapshot.hasData
                       ? ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (context, index) {
-                            if (idCliente == snapshot.data[index].persona1) {
-                              idEmpleado = snapshot.data[index].persona2;
+                            if (idEmpleado == snapshot.data[index].persona1) {
+                              idCliente1 = snapshot.data[index].persona2;
                             } else {
-                              idEmpleado = snapshot.data[index].persona1;
+                              idCliente1 = snapshot.data[index].persona1;
                             }
+                            print(idCliente1);
                             return FutureBuilder(
-                              future:
-                                  _empleadoRepository.getEmpleado(idEmpleado),
+                              future: _usuarioRepository
+                                  .getCurrentUsuario(idCliente1),
                               builder: (context,
-                                  AsyncSnapshot<EmpleadoModel> snapshot2) {
+                                  AsyncSnapshot<UsuarioModel> snapshot2) {
                                 return snapshot2.hasData
                                     ? FutureBuilder(
                                         future: _mensajeRepository
@@ -69,7 +70,7 @@ class _BodyListInboxState extends State<BodyListInbox> {
                                                 snapshot3) {
                                           if (snapshot3.hasData) {
                                             if (snapshot3.data[0].idEmisor ==
-                                                idCliente) {
+                                                idEmpleado) {
                                               emisor = nombreCliente + ":";
                                             } else {
                                               emisor =

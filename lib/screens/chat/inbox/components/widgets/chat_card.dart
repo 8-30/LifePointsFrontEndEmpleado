@@ -10,17 +10,17 @@ import 'package:life_point_empleado/provider/mensaje/mensaje_repository.dart';
 
 class ChatCard extends StatefulWidget {
   final PersonaModel persona;
-  final int cliente;
+  final int empleado;
   final int idInbox;
   ChatCard({
     Key key,
     this.persona,
-    this.cliente,
+    this.empleado,
     this.idInbox,
   }) : super(key: key);
   @override
   State createState() =>
-      new ChatWindow(this.idInbox, this.cliente, this.persona);
+      new ChatWindow(this.idInbox, this.empleado, this.persona);
 }
 
 class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
@@ -28,13 +28,13 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
   MensajeRepository _mensajeRepository = MensajeRepository();
   List<MensajeModel> mensajes;
   PersonaModel persona;
-  int idInbox, cliente;
+  int idInbox, empleado;
   final HomeController homeController = Get.find();
 
   List<Msg> _messages = <Msg>[];
   final TextEditingController _textController = new TextEditingController();
   bool _isWriting = false;
-  ChatWindow(this.idInbox, this.cliente, this.persona);
+  ChatWindow(this.idInbox, this.empleado, this.persona);
 
   @override
   void initState() {
@@ -134,7 +134,7 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
       _messages.insert(0, msg);
     });
     msg.animationController.forward();
-    _mensajeRepository.postMensaje(txt, idInbox, cliente);
+    _mensajeRepository.postMensaje(txt, idInbox, empleado);
     print("mande el socket");
     socketIO.sendMessage(
         'send_message', '{idInbox: ' + idInbox.toString() + '}');

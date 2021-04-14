@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:life_point_empleado/controllers/controllers.dart';
 import 'package:flutter_socket_io/flutter_socket_io.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:life_point_empleado/controllers/home/home_controller.dart';
 import 'package:life_point_empleado/models/inbox_model.dart';
 import 'package:life_point_empleado/models/mensaje_model.dart';
 import 'package:life_point_empleado/models/person_model.dart';
@@ -19,15 +21,15 @@ class ChatBody extends StatefulWidget {
 class _ChatBodyState extends State<ChatBody> {
   SocketIO socketIO;
   final PersonaModel persona;
-  final usuarioIDStorage = GetStorage();
-  int idCliente;
+  final HomeController _controller = Get.find();
+  int idEmpleado;
   List<MensajeModel> mensajes;
   _ChatBodyState(this.persona);
   InboxRepository _inboxRepository = InboxRepository();
 
   @override
   void initState() {
-    idCliente = usuarioIDStorage.read("usuarioID");
+    idEmpleado = _controller?.currerEmpleadoModel?.idEmpleado;
     super.initState();
   }
 
@@ -38,11 +40,11 @@ class _ChatBodyState extends State<ChatBody> {
             padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
             child: FutureBuilder(
               future: _inboxRepository.getInboxParticipantes(
-                  persona.idPersona, idCliente),
+                  persona.idPersona, idEmpleado),
               builder: (context, AsyncSnapshot<InboxModel> snapshot1) {
                 return snapshot1.hasData
                     ? ChatCard(
-                        cliente: idCliente,
+                        empleado: idEmpleado,
                         persona: persona,
                         idInbox: snapshot1.data.idInbox,
                       )

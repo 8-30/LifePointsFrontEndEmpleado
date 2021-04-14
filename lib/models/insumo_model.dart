@@ -18,7 +18,7 @@ class InsumoModel {
       idInsumo: json['idInsumo'],
       idInsumoEmpleado: json['idInsumoEmpleado'],
       nombre: json['nombre'],
-      tarifa: json['tarifa'],
+      tarifa: json['tarifa']?.toDouble(),
       descripcion: json['descripcion'],
     );
   }

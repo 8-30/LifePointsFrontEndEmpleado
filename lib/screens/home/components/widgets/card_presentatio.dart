@@ -14,9 +14,11 @@ class CardPresentation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Image(
-        image: NetworkImage(
-            "https://img.freepik.com/vector-gratis/palabra-bienvenida-personajes-dibujos-animados-plana-personas_81522-4207.jpg?size=626&ext=jpg"),
+      child: Image.asset(
+        "assets/bienvenido.png",
+        fit: BoxFit.cover,
+        width: 300.0,
+        height: 300.0,
       ),
     );
   }

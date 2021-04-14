@@ -6,7 +6,8 @@ import 'package:life_point_empleado/controllers/controllers.dart';
 import 'package:life_point_empleado/models/empleado_model.dart';
 import 'package:life_point_empleado/models/insumo_model.dart';
 import 'package:life_point_empleado/provider/insumo/insumo_repository.dart';
-import 'package:life_point_empleado/screens/widgets/avatar.dart';
+
+import 'package:life_point_empleado/screens/widgets/job.dart';
 
 class BodyNegocio extends StatefulWidget {
   const BodyNegocio({Key key}) : super(key: key);
@@ -33,9 +34,6 @@ class _BodyNegocioState extends State<BodyNegocio>
   InsumoRepository _insumoRepository = InsumoRepository();
   @override
   void initState() {
-    _newPrecioController = new TextEditingController();
-    _newInsumoController = new TextEditingController();
-    _idInsumos = new List<int>();
     idEmpleado = _controller?.currerEmpleadoModel?.idEmpleado;
     empresaController.text = _controller?.currerEmpleadoModel?.empresa;
     descripcionController.text = _controller?.currerEmpleadoModel?.descripcion;
@@ -50,12 +48,7 @@ class _BodyNegocioState extends State<BodyNegocio>
         children: [
           Column(
             children: [
-              Avatar(),
-              Text("¡Hola!"),
-              Text(
-                _controller?.currerEmpleadoModel?.usuario,
-                style: TextStyle(fontSize: 20, letterSpacing: 1.5),
-              ),
+              Job(),
               Container(
                 child: Padding(
                   padding: EdgeInsets.only(
@@ -260,9 +253,12 @@ class _BodyNegocioState extends State<BodyNegocio>
                         builder: (context,
                             AsyncSnapshot<List<InsumoModel>> snapshot) {
                           if (snapshot.hasData) {
+                            _insumoControllers =
+                                new List<TextEditingController>();
+                            _idInsumos = new List<int>();
+                            _precioControllers =
+                                new List<TextEditingController>();
                             if (_idInsumos.length < snapshot.data.length) {
-                              print("aqui se ve");
-                              print(snapshot.data.length);
                               for (var i = 0; i < snapshot.data.length; i++) {
                                 TextEditingController _insumoController =
                                     new TextEditingController();
@@ -314,6 +310,8 @@ class _BodyNegocioState extends State<BodyNegocio>
                                               decoration: InputDecoration(
                                                 hintText: "Precio",
                                               ),
+                                              keyboardType:
+                                                  TextInputType.number,
                                               enabled: !_statusInsumo,
                                               autofocus: !_statusInsumo,
                                             ),
@@ -326,6 +324,74 @@ class _BodyNegocioState extends State<BodyNegocio>
                               : CircularProgressIndicator();
                         },
                       ),
+                      !_statusInsumo
+                          ? Padding(
+                              padding: EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 25.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 10.0),
+                                      child: RaisedButton(
+                                        child: Text("Guardar"),
+                                        textColor: Colors.white,
+                                        color: Colors.green,
+                                        onPressed: () {
+                                          for (var i = 0;
+                                              i < _idInsumos.length;
+                                              i++) {
+                                            InsumoModel insumo =
+                                                new InsumoModel(
+                                                    idInsumo: _idInsumos[i],
+                                                    idInsumoEmpleado:
+                                                        idEmpleado,
+                                                    nombre:
+                                                        _insumoControllers[i]
+                                                            .text,
+                                                    tarifa: double.parse(
+                                                        _precioControllers[i]
+                                                            .text),
+                                                    descripcion: "Ninguna");
+                                            print(i);
+                                            _insumoRepository
+                                                .updateInsumo(insumo);
+                                          }
+
+                                          setState(() {
+                                            _statusInsumo = true;
+                                          });
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0)),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 10.0),
+                                      child: RaisedButton(
+                                        child: Text("Cancelar"),
+                                        textColor: Colors.white,
+                                        color: Colors.red,
+                                        onPressed: () {
+                                          setState(() {
+                                            _statusInsumo = true;
+                                          });
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0)),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(),
                       !_statusNew
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,6 +419,7 @@ class _BodyNegocioState extends State<BodyNegocio>
                                           decoration: InputDecoration(
                                             hintText: "Precio",
                                           ),
+                                          keyboardType: TextInputType.number,
                                           enabled: !_statusNew,
                                           autofocus: !_statusNew,
                                         )),
@@ -413,73 +480,6 @@ class _BodyNegocioState extends State<BodyNegocio>
                                   ),
                                 )
                               ],
-                            )
-                          : Container(),
-                      !_statusInsumo
-                          ? Padding(
-                              padding: EdgeInsets.only(
-                                  left: 25.0, right: 25.0, top: 25.0),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(right: 10.0),
-                                      child: RaisedButton(
-                                        child: Text("Guardar"),
-                                        textColor: Colors.white,
-                                        color: Colors.green,
-                                        onPressed: () {
-                                          for (var i = 0;
-                                              i < _idInsumos.length;
-                                              i++) {
-                                            InsumoModel insumo =
-                                                new InsumoModel(
-                                                    idInsumo: _idInsumos[i],
-                                                    idInsumoEmpleado:
-                                                        idEmpleado,
-                                                    nombre:
-                                                        _insumoControllers[i]
-                                                            .text,
-                                                    tarifa: double.parse(
-                                                        _precioControllers[i]
-                                                            .text),
-                                                    descripcion: "Ninguna");
-                                            print(i);
-                                            _insumoRepository
-                                                .updateInsumo(insumo);
-                                          }
-                                          setState(() {
-                                            _statusInsumo = true;
-                                          });
-                                        },
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0)),
-                                      ),
-                                    ),
-                                    flex: 2,
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.only(left: 10.0),
-                                      child: RaisedButton(
-                                        child: Text("Cancelar"),
-                                        textColor: Colors.white,
-                                        color: Colors.red,
-                                        onPressed: () {
-                                          setState(() {
-                                            _statusInsumo = true;
-                                          });
-                                        },
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0)),
-                                      ),
-                                    ),
-                                    flex: 2,
-                                  ),
-                                ],
-                              ),
                             )
                           : Container(),
                     ],
