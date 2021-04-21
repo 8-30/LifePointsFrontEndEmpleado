@@ -247,6 +247,30 @@ class _BodyProfileState extends State<BodyProfile>
                                         color: Colors.red,
                                         onPressed: () {
                                           setState(() {
+                                            nameController.text = _controller
+                                                ?.currerEmpleadoModel?.nombre;
+                                            lastnameController.text =
+                                                _controller?.currerEmpleadoModel
+                                                    ?.apellido;
+                                            emailController.text = _controller
+                                                ?.currerEmpleadoModel?.email;
+                                            phoneNumberController.text =
+                                                _controller?.currerEmpleadoModel
+                                                    ?.telefono;
+                                            ciController.text = _controller
+                                                ?.currerEmpleadoModel
+                                                ?.credencial;
+                                            directionController.text =
+                                                _controller?.currerEmpleadoModel
+                                                    ?.direccion;
+                                            empresaController.text = _controller
+                                                ?.currerEmpleadoModel?.empresa;
+                                            descripcionController.text =
+                                                _controller?.currerEmpleadoModel
+                                                    ?.descripcion;
+                                            tarifaController.text = _controller
+                                                ?.currerEmpleadoModel?.tarifa
+                                                .toString();
                                             _status = true;
                                           });
                                         },

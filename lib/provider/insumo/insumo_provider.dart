@@ -75,4 +75,13 @@ class InsumoApiProvider {
       print("Exception occured: $error");
     }
   }
+
+  void deleteInsumo(int id) async {
+    try {
+      print(_endpoint + id.toString());
+      await _dio.delete(_endpoint + id.toString());
+    } catch (error) {
+      print("Exception occured: $error");
+    }
+  }
 }

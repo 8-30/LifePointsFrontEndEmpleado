@@ -21,6 +21,8 @@ class _BodyNegocioState extends State<BodyNegocio>
   bool _status = true;
   bool _statusInsumo = true;
   bool _statusNew = true;
+  final _formKey = GlobalKey<FormState>();
+  List<InsumoModel> insumos = new List<InsumoModel>();
   int idEmpleado;
   final HomeController _controller = Get.find();
   EmpleadoModel _empleadoModel = EmpleadoModel();
@@ -35,15 +37,24 @@ class _BodyNegocioState extends State<BodyNegocio>
   @override
   void initState() {
     idEmpleado = _controller?.currerEmpleadoModel?.idEmpleado;
+    nameController.text = _controller?.currerEmpleadoModel?.nombre;
+    lastnameController.text = _controller?.currerEmpleadoModel?.apellido;
+    emailController.text = _controller?.currerEmpleadoModel?.email;
+    phoneNumberController.text = _controller?.currerEmpleadoModel?.telefono;
+    ciController.text = _controller?.currerEmpleadoModel?.credencial;
+    directionController.text = _controller?.currerEmpleadoModel?.direccion;
     empresaController.text = _controller?.currerEmpleadoModel?.empresa;
     descripcionController.text = _controller?.currerEmpleadoModel?.descripcion;
     tarifaController.text = _controller?.currerEmpleadoModel?.tarifa.toString();
+    _cargarInsumos(idEmpleado);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+        child: Form(
+      key: _formKey,
       child: ListView(
         children: [
           Column(
@@ -92,8 +103,14 @@ class _BodyNegocioState extends State<BodyNegocio>
                           Flexible(
                             child: Padding(
                               padding: EdgeInsets.only(right: 10.0),
-                              child: TextField(
+                              child: TextFormField(
                                 controller: descripcionController,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'El campo no puede ser vacio.';
+                                  }
+                                  return null;
+                                },
                                 decoration: InputDecoration(
                                     hintText: "Descripcion de tu servicio"),
                                 enabled: !_status,
@@ -111,9 +128,16 @@ class _BodyNegocioState extends State<BodyNegocio>
                             style: TextStyle(
                                 fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
-                          TextField(
+                          TextFormField(
                             controller: tarifaController,
-                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'El campo no puede ser vacio.';
+                              }
+                              return null;
+                            },
+                            keyboardType:
+                                TextInputType.numberWithOptions(decimal: true),
                             decoration: InputDecoration(
                               hintText: "00.00",
                             ),
@@ -130,7 +154,7 @@ class _BodyNegocioState extends State<BodyNegocio>
                             style: TextStyle(
                                 fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
-                          TextField(
+                          TextFormField(
                             controller: empresaController,
                             decoration: InputDecoration(
                               hintText: "Tu Empresa",
@@ -154,29 +178,33 @@ class _BodyNegocioState extends State<BodyNegocio>
                                         textColor: Colors.white,
                                         color: Colors.green,
                                         onPressed: () {
-                                          _empleadoModel.nombre =
-                                              nameController.text;
-                                          _empleadoModel.apellido =
-                                              lastnameController.text;
-                                          _empleadoModel.email =
-                                              emailController.text;
-                                          _empleadoModel.telefono =
-                                              phoneNumberController.text;
-                                          _empleadoModel.credencial =
-                                              ciController.text;
-                                          _empleadoModel.direccion =
-                                              directionController.text;
-                                          _empleadoModel.descripcion =
-                                              descripcionController.text;
-                                          _empleadoModel.tarifa = double.parse(
-                                              tarifaController.text);
-                                          _empleadoModel.empresa =
-                                              empresaController.text;
-                                          _controller
-                                              .updateEmpleado(_empleadoModel);
-                                          setState(() {
-                                            _status = true;
-                                          });
+                                          if (_formKey.currentState
+                                              .validate()) {
+                                            _empleadoModel.nombre =
+                                                nameController.text;
+                                            _empleadoModel.apellido =
+                                                lastnameController.text;
+                                            _empleadoModel.email =
+                                                emailController.text;
+                                            _empleadoModel.telefono =
+                                                phoneNumberController.text;
+                                            _empleadoModel.credencial =
+                                                ciController.text;
+                                            _empleadoModel.direccion =
+                                                directionController.text;
+                                            _empleadoModel.descripcion =
+                                                descripcionController.text;
+                                            _empleadoModel.tarifa =
+                                                double.parse(
+                                                    tarifaController.text);
+                                            _empleadoModel.empresa =
+                                                empresaController.text;
+                                            _controller
+                                                .updateEmpleado(_empleadoModel);
+                                            setState(() {
+                                              _status = true;
+                                            });
+                                          }
                                         },
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -194,6 +222,30 @@ class _BodyNegocioState extends State<BodyNegocio>
                                         color: Colors.red,
                                         onPressed: () {
                                           setState(() {
+                                            nameController.text = _controller
+                                                ?.currerEmpleadoModel?.nombre;
+                                            lastnameController.text =
+                                                _controller?.currerEmpleadoModel
+                                                    ?.apellido;
+                                            emailController.text = _controller
+                                                ?.currerEmpleadoModel?.email;
+                                            phoneNumberController.text =
+                                                _controller?.currerEmpleadoModel
+                                                    ?.telefono;
+                                            ciController.text = _controller
+                                                ?.currerEmpleadoModel
+                                                ?.credencial;
+                                            directionController.text =
+                                                _controller?.currerEmpleadoModel
+                                                    ?.direccion;
+                                            empresaController.text = _controller
+                                                ?.currerEmpleadoModel?.empresa;
+                                            descripcionController.text =
+                                                _controller?.currerEmpleadoModel
+                                                    ?.descripcion;
+                                            tarifaController.text = _controller
+                                                ?.currerEmpleadoModel?.tarifa
+                                                .toString();
                                             _status = true;
                                           });
                                         },
@@ -225,18 +277,27 @@ class _BodyNegocioState extends State<BodyNegocio>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              _statusNew ? _getAddIcon() : Container(),
+                              _statusNew & _statusInsumo
+                                  ? _getAddIcon()
+                                  : Container(),
                               Text(" "),
-                              _statusInsumo ? _getEditIconInsumo() : Container()
+                              _statusInsumo & _statusNew
+                                  ? _getEditIconInsumo()
+                                  : Container()
                             ],
                           )
                         ],
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'Insumo',
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '        ',
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
@@ -284,10 +345,16 @@ class _BodyNegocioState extends State<BodyNegocio>
                                           _idInsumos.length,
                                           (index) => SizedBox(
                                             width: 100.0,
-                                            height: 70.0,
-                                            child: TextField(
+                                            height: 50.0,
+                                            child: TextFormField(
                                               controller:
                                                   _insumoControllers[index],
+                                              validator: (value) {
+                                                if (value.isEmpty) {
+                                                  return 'El campo no puede ser vacio.';
+                                                }
+                                                return null;
+                                              },
                                               decoration: InputDecoration(
                                                 hintText: "Insumo",
                                               ),
@@ -297,27 +364,59 @@ class _BodyNegocioState extends State<BodyNegocio>
                                           ),
                                         ),
                                       ),
-                                      Text("             "),
+                                      Text("        "),
                                       Column(
                                         children: new List.generate(
                                           _idInsumos.length,
                                           (index) => SizedBox(
-                                            width: 100.0,
-                                            height: 70.0,
-                                            child: TextField(
+                                            width: 10.0,
+                                            height: 50.0,
+                                            child: Text(" \$ "),
+                                          ),
+                                        ),
+                                      ),
+                                      Column(
+                                        children: new List.generate(
+                                          _idInsumos.length,
+                                          (index) => SizedBox(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            child: TextFormField(
                                               controller:
                                                   _precioControllers[index],
+                                              validator: (value) {
+                                                if (value.isEmpty) {
+                                                  return 'El campo no puede ser vacio.';
+                                                }
+                                                return null;
+                                              },
                                               decoration: InputDecoration(
                                                 hintText: "Precio",
                                               ),
-                                              keyboardType:
-                                                  TextInputType.number,
+                                              keyboardType: TextInputType
+                                                  .numberWithOptions(
+                                                      decimal: true),
                                               enabled: !_statusInsumo,
                                               autofocus: !_statusInsumo,
                                             ),
                                           ),
                                         ),
-                                      )
+                                      ),
+                                      Text("   "),
+                                      _statusNew && _statusInsumo
+                                          ? Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: new List.generate(
+                                                _idInsumos.length,
+                                                (index) => SizedBox(
+                                                    width: 20.0,
+                                                    height: 50.0,
+                                                    child:
+                                                        _getDeleteIcon(index)),
+                                              ),
+                                            )
+                                          : Column()
                                     ],
                                   ),
                                 )
@@ -338,29 +437,29 @@ class _BodyNegocioState extends State<BodyNegocio>
                                         textColor: Colors.white,
                                         color: Colors.green,
                                         onPressed: () {
-                                          for (var i = 0;
-                                              i < _idInsumos.length;
-                                              i++) {
-                                            InsumoModel insumo =
-                                                new InsumoModel(
-                                                    idInsumo: _idInsumos[i],
-                                                    idInsumoEmpleado:
-                                                        idEmpleado,
-                                                    nombre:
-                                                        _insumoControllers[i]
-                                                            .text,
-                                                    tarifa: double.parse(
-                                                        _precioControllers[i]
-                                                            .text),
-                                                    descripcion: "Ninguna");
-                                            print(i);
-                                            _insumoRepository
-                                                .updateInsumo(insumo);
+                                          if (_formKey.currentState
+                                              .validate()) {
+                                            for (var i = 0;
+                                                i < _idInsumos.length;
+                                                i++) {
+                                              InsumoModel insumo =
+                                                  new InsumoModel(
+                                                      idInsumo: _idInsumos[i],
+                                                      idInsumoEmpleado:
+                                                          idEmpleado,
+                                                      nombre:
+                                                          _insumoControllers[i]
+                                                              .text,
+                                                      tarifa: double.parse(
+                                                          _precioControllers[i]
+                                                              .text),
+                                                      descripcion: "Ninguna");
+                                              print(i);
+                                              _insumoRepository
+                                                  .updateInsumo(insumo);
+                                            }
+                                            _cargarInsumos(idEmpleado);
                                           }
-
-                                          setState(() {
-                                            _statusInsumo = true;
-                                          });
                                         },
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -377,9 +476,7 @@ class _BodyNegocioState extends State<BodyNegocio>
                                         textColor: Colors.white,
                                         color: Colors.red,
                                         onPressed: () {
-                                          setState(() {
-                                            _statusInsumo = true;
-                                          });
+                                          _cargarInsumos(idEmpleado);
                                         },
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -401,25 +498,44 @@ class _BodyNegocioState extends State<BodyNegocio>
                                   children: [
                                     SizedBox(
                                         width: 100.0,
-                                        height: 70.0,
-                                        child: TextField(
+                                        height: 50.0,
+                                        child: TextFormField(
                                           controller: _newInsumoController,
+                                          validator: (value) {
+                                            if (value.isEmpty) {
+                                              return 'El campo no puede ser vacio.';
+                                            }
+                                            return null;
+                                          },
                                           decoration: InputDecoration(
                                             hintText: "Insumo",
                                           ),
                                           enabled: !_statusNew,
                                           autofocus: !_statusNew,
                                         )),
-                                    Text("             "),
+                                    Text("        "),
                                     SizedBox(
-                                        width: 100.0,
-                                        height: 70.0,
-                                        child: TextField(
+                                      width: 10.0,
+                                      height: 50.0,
+                                      child: Text(" \$ "),
+                                    ),
+                                    SizedBox(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        child: TextFormField(
                                           controller: _newPrecioController,
+                                          validator: (value) {
+                                            if (value.isEmpty) {
+                                              return 'El campo no puede ser vacio.';
+                                            }
+                                            return null;
+                                          },
                                           decoration: InputDecoration(
                                             hintText: "Precio",
                                           ),
-                                          keyboardType: TextInputType.number,
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  decimal: true),
                                           enabled: !_statusNew,
                                           autofocus: !_statusNew,
                                         )),
@@ -438,15 +554,16 @@ class _BodyNegocioState extends State<BodyNegocio>
                                             textColor: Colors.white,
                                             color: Colors.green,
                                             onPressed: () {
-                                              _insumoRepository.postInsumo(
-                                                  idEmpleado,
-                                                  _newInsumoController.text,
-                                                  double.parse(
-                                                      _newPrecioController
-                                                          .text));
-                                              setState(() {
-                                                _statusNew = true;
-                                              });
+                                              if (_formKey.currentState
+                                                  .validate()) {
+                                                _insumoRepository.postInsumo(
+                                                    idEmpleado,
+                                                    _newInsumoController.text,
+                                                    double.parse(
+                                                        _newPrecioController
+                                                            .text));
+                                                _cargarInsumos(idEmpleado);
+                                              }
                                             },
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -490,13 +607,13 @@ class _BodyNegocioState extends State<BodyNegocio>
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _getEditIcon() {
     return GestureDetector(
       child: CircleAvatar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
         radius: 14.0,
         child: Icon(
           Icons.edit,
@@ -515,7 +632,7 @@ class _BodyNegocioState extends State<BodyNegocio>
   Widget _getEditIconInsumo() {
     return GestureDetector(
       child: CircleAvatar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
         radius: 14.0,
         child: Icon(
           Icons.edit,
@@ -548,5 +665,91 @@ class _BodyNegocioState extends State<BodyNegocio>
         });
       },
     );
+  }
+
+  Widget _getDeleteIcon(id) {
+    return GestureDetector(
+      child: CircleAvatar(
+        backgroundColor: Colors.red,
+        radius: 14.0,
+        child: Icon(
+          Icons.cancel_outlined,
+          color: Colors.white,
+          size: 16.0,
+        ),
+      ),
+      onTap: () {
+        showDialog<void>(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    RichText(
+                      text: new TextSpan(
+                        style: TextStyle(color: Colors.black),
+                        children: <TextSpan>[
+                          new TextSpan(text: 'Seguro que desea eliminar '),
+                          new TextSpan(
+                              text: _insumoControllers[id].text,
+                              style:
+                                  new TextStyle(fontWeight: FontWeight.bold)),
+                          new TextSpan(text: ' de su lista de insumos?'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Eliminar'),
+                  onPressed: () {
+                    _insumoRepository.deleteInsumo(_idInsumos[id]);
+                    _cargarInsumos(idEmpleado);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text('Cancelar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _cargarInsumos(idEmpleado) async {
+    insumos = await _insumoRepository
+        .getInsumoEmpleado(_controller.currentEmpleadoId);
+    if (insumos.length > 0) {
+      _insumoControllers = new List<TextEditingController>();
+      _idInsumos = new List<int>();
+      _precioControllers = new List<TextEditingController>();
+      if (_idInsumos.length < insumos.length) {
+        for (var i = 0; i < insumos.length; i++) {
+          TextEditingController _insumoController = new TextEditingController();
+          TextEditingController _precioController = new TextEditingController();
+          _insumoController.text = insumos[i].nombre;
+          _precioController.text = insumos[i].tarifa.toString();
+          _idInsumos.add(insumos[i].idInsumo);
+          _insumoControllers.add(_insumoController);
+          _precioControllers.add(_precioController);
+        }
+      }
+    }
+    setState(() {
+      _statusInsumo = true;
+      _statusNew = true;
+      _newPrecioController = new TextEditingController();
+      _newInsumoController = new TextEditingController();
+    });
   }
 }

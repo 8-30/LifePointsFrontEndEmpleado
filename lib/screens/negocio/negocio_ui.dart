@@ -8,7 +8,7 @@ class NegocioUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Perfil de Usuario"),
+        title: Text("Negocio/Servicio"),
         centerTitle: true,
       ),
       body: BodyNegocio(),

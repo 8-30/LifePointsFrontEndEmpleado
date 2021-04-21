@@ -3,7 +3,6 @@ import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:life_point_empleado/controllers/controllers.dart'
     show AuthController;
-import 'package:life_point_empleado/screens/ui.dart';
 import 'package:life_point_empleado/screens/widgets/TextFormFieldWithIcon.dart';
 import 'package:life_point_empleado/screens/widgets/avatar.dart';
 
@@ -57,9 +56,8 @@ class BodyLogin extends StatelessWidget {
                     TextSpan(text: "No tienes cuenta? "),
                     WidgetSpan(
                         child: GestureDetector(
-                      onTap: () => Get.to(() => RegisterUI()),
                       child: Text(
-                        "Crear Cuenta".toLowerCase(),
+                        "Solicita tu cuenta a 0959401032".toLowerCase(),
                         style: Theme.of(context)
                             .textTheme
                             .caption

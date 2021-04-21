@@ -23,4 +23,8 @@ class InsumoRepository {
   void updateInsumo(model) {
     return _apiProvider.updateInsumo(model);
   }
+
+  void deleteInsumo(id) {
+    return _apiProvider.deleteInsumo(id);
+  }
 }

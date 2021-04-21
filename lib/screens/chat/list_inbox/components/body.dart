@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/instance_manager.dart';
 
 import 'package:life_point_empleado/controllers/controllers.dart';
@@ -33,7 +34,6 @@ class _BodyListInboxState extends State<BodyListInbox> {
     idEmpleado = homeController?.currerEmpleadoModel?.idEmpleado;
     nombreCliente = homeController?.currerEmpleadoModel?.nombre;
     idCliente1 = 1;
-
     super.initState();
   }
 
