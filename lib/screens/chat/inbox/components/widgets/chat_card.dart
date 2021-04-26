@@ -38,7 +38,7 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    _buscarMsg(idInbox);
+    _cargarMsg(idInbox);
     socketIO = SocketIOManager().createSocketIO(
       //'https://lifepoints.herokuapp.com/',
       'https://prueba-servidor-sock.herokuapp.com/',
@@ -47,7 +47,8 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
     socketIO.init();
     socketIO.subscribe('receive_message', (data) {
       if (data.toString().contains(idInbox.toString() + "}")) {
-        _buscarMsg(idInbox);
+        print("entro");
+        _recibirMsg(idInbox);
       }
     });
     socketIO.connect();
@@ -118,7 +119,7 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
     );
   }
 
-  void _submitMsg(String txt) {
+  void _submitMsg(String txt) async {
     _textController.clear();
     setState(() {
       _isWriting = false;
@@ -130,25 +131,60 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
       animationController: new AnimationController(
           vsync: this, duration: new Duration(milliseconds: 800)),
     );
-    setState(() {
-      _messages.insert(0, msg);
-    });
+
     msg.animationController.forward();
-    _mensajeRepository.postMensaje(txt, idInbox, empleado);
-    print("mande el socket");
-    socketIO.sendMessage(
-        'send_message', '{idInbox: ' + idInbox.toString() + '}');
+    bool val = await _mensajeRepository.postMensaje(txt, idInbox, empleado);
+    if (val) {
+      print("mande el socket");
+      socketIO.sendMessage(
+          'send_message', '{idInbox: ' + idInbox.toString() + '}');
+      setState(() {
+        _messages.insert(0, msg);
+      });
+    }
   }
 
-  Future<void> _buscarMsg(idInbox) async {
+  Future<void> _cargarMsg(idInbox) async {
     this.mensajes = await _mensajeRepository.getAllMensajeInbox(idInbox);
-    await _cargarMsg();
+    setState(() {});
+    await _llenarMsg();
   }
 
-  _cargarMsg() {
+  _recibirMsg(idInbox) async {
+    List<MensajeModel> listaMensajes =
+        await _mensajeRepository.getAllMensajeInbox(idInbox);
     String emisor = homeController.currerEmpleadoModel.nombre;
     bool enviado = true;
-    //esto se pude mejorar
+    print("entrox2");
+    print(listaMensajes.length.toString() + "/" + _messages.length.toString());
+    if (listaMensajes.length > _messages.length) {
+      for (var i = _messages.length; i < listaMensajes.length; i++) {
+        if (listaMensajes[i].idEmisor == persona.idPersona) {
+          emisor = persona.nombre;
+          enviado = false;
+        } else {
+          emisor = homeController.currerEmpleadoModel.nombre;
+          enviado = true;
+        }
+        Msg msg = new Msg(
+          enviado: enviado,
+          emisor: emisor,
+          txt: listaMensajes[i].texto,
+          animationController: new AnimationController(
+              vsync: this, duration: new Duration(milliseconds: 800)),
+        );
+        print(msg.txt);
+        setState(() {
+          _messages.insert(0, msg);
+        });
+        msg.animationController.forward();
+      }
+    }
+  }
+
+  _llenarMsg() {
+    String emisor = homeController.currerEmpleadoModel.nombre;
+    bool enviado = true;
     _messages = <Msg>[];
     if (_messages.length == 0) {
       try {
@@ -167,13 +203,14 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
             animationController: new AnimationController(
                 vsync: this, duration: new Duration(milliseconds: 800)),
           );
-          setState(() {
-            _messages.insert(0, msg);
-          });
+
+          _messages.insert(0, msg);
+
           msg.animationController.forward();
         });
       } catch (e) {}
     }
+    setState(() {});
   }
 
   @override

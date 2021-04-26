@@ -21,7 +21,7 @@ class MensajeRepository {
     return _apiProvider.getMensajeid(id);
   }
 
-  Future<MensajeModel> postMensaje(model, id, idEmisor) {
+  Future<bool> postMensaje(model, id, idEmisor) {
     return _apiProvider.postMensaje(model, id, idEmisor);
   }
 }
