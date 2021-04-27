@@ -218,8 +218,8 @@ class ChatWindow extends State<ChatCard> with TickerProviderStateMixin {
     for (Msg msg in _messages) {
       msg.animationController.dispose();
     }
-    socketIO.disconnect();
-    socketIO.destroy();
+    //socketIO.disconnect();
+    //socketIO.destroy();
     super.dispose();
   }
 }

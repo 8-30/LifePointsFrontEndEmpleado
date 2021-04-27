@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_socket_io/flutter_socket_io.dart';
+import 'package:flutter_socket_io/socket_io_manager.dart';
 
 import 'package:get/instance_manager.dart';
 
@@ -29,11 +31,37 @@ class _BodyListInboxState extends State<BodyListInbox> {
   String emisor;
   String nombreCliente;
   final HomeController homeController = Get.find();
+  List<InboxModel> listaInbox = List<InboxModel>();
+  SocketIO socketIO2;
 
   void initState() {
     idEmpleado = homeController?.currerEmpleadoModel?.idEmpleado;
     nombreCliente = homeController?.currerEmpleadoModel?.nombre;
     idCliente1 = 1;
+    _cargarInbox();
+
+    socketIO2 = SocketIOManager().createSocketIO(
+      //'https://lifepoints.herokuapp.com/',
+      'https://prueba-servidor-sock.herokuapp.com/',
+      '/',
+    );
+    socketIO2.init();
+    socketIO2.subscribe('receive_inbox', (data) {
+      for (var item in listaInbox) {
+        if (data.toString().contains(item.idInbox.toString() + "}")) {
+          setState(() {});
+        }
+      }
+    });
+    socketIO2.subscribe('receive_message', (data) {
+      for (var item in listaInbox) {
+        if (data.toString().contains(item.idInbox.toString() + "}")) {
+          setState(() {});
+        }
+      }
+    });
+    socketIO2.connect();
+
     super.initState();
   }
 
@@ -98,5 +126,15 @@ class _BodyListInboxState extends State<BodyListInbox> {
                           })
                       : Center(child: CircularProgressIndicator());
                 })));
+  }
+
+  Future<void> _cargarInbox() async {
+    listaInbox = await _inboxRepository.getInboxPersona(idEmpleado);
+  }
+
+  void dispose() {
+    socketIO2.disconnect();
+    socketIO2.destroy();
+    super.dispose();
   }
 }
