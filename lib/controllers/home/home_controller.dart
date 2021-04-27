@@ -60,6 +60,7 @@ class HomeController extends GetxController {
     currerEmpleadoModel.credencial = model.credencial;
     currerEmpleadoModel.direccion = model.direccion;
     currerEmpleadoModel.descripcion = model.descripcion;
+    currerEmpleadoModel.nombreServicio = model.nombreServicio;
     currerEmpleadoModel.empresa = model.empresa;
     currerEmpleadoModel.tarifa = model.tarifa;
     final data = await empleadoRepository.putEmpleado(currerEmpleadoModel);

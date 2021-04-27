@@ -5,6 +5,7 @@ class EmpleadoModel extends PersonaModel {
   String empresa;
   double tarifa;
   double calificacion;
+  String nombreServicio;
   String descripcion;
 
   EmpleadoModel(
@@ -20,6 +21,7 @@ class EmpleadoModel extends PersonaModel {
       credencial,
       contrasenia,
       empleado,
+      notyKey,
       this.idEmpleado,
       this.calificacion,
       this.empresa,
@@ -32,6 +34,7 @@ class EmpleadoModel extends PersonaModel {
     empleadoModel.idPersona = json['idEmpleado'];
     empleadoModel.calificacion = json['calificacion']?.toDouble();
     empleadoModel.tarifa = json['tarifa']?.toDouble();
+    empleadoModel.nombreServicio = json['nombreServicio'];
     empleadoModel.descripcion = json['descripcion'];
     empleadoModel.empresa = json['empresa'];
     empleadoModel.nombre = json['persona']['nombre'];
@@ -45,6 +48,7 @@ class EmpleadoModel extends PersonaModel {
     empleadoModel.credencial = json['persona']['credencial'];
     empleadoModel.contrasenia = json['persona']['contrasenia'];
     empleadoModel.usuario = json['persona']['usuario'];
+    empleadoModel.notyKey = json['persona']['notyKey'];
     return empleadoModel;
   }
 
@@ -73,5 +77,7 @@ class EmpleadoModel extends PersonaModel {
         "credencial": credencial,
         "contrasenia": contrasenia,
         "usuario": usuario,
+        "nombreServicio": nombreServicio,
+        "notyKey": notyKey,
       };
 }

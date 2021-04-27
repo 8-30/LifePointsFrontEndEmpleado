@@ -11,6 +11,7 @@ class PersonaModel {
   String credencial;
   String contrasenia;
   String usuario;
+  String notyKey;
 //  Persona persona;
   PersonaModel({
     this.idPersona,

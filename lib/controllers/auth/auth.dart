@@ -14,4 +14,5 @@ class Auth {
   TextEditingController empresaController = TextEditingController();
   TextEditingController descripcionController = TextEditingController();
   TextEditingController tarifaController = TextEditingController();
+  TextEditingController nombreServicioController = TextEditingController();
 }

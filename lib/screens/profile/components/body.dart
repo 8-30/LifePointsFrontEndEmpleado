@@ -30,6 +30,8 @@ class _BodyProfileState extends State<BodyProfile>
     empresaController.text = _controller?.currerEmpleadoModel?.empresa;
     descripcionController.text = _controller?.currerEmpleadoModel?.descripcion;
     tarifaController.text = _controller?.currerEmpleadoModel?.tarifa.toString();
+    nombreServicioController.text =
+        _controller?.currerEmpleadoModel?.nombreServicio;
     super.initState();
   }
 
@@ -268,6 +270,11 @@ class _BodyProfileState extends State<BodyProfile>
                                                       tarifaController.text);
                                               _empleadoModel.empresa =
                                                   empresaController.text;
+                                              nombreServicioController
+                                                  .text = _empleadoModel
+                                                      .nombreServicio =
+                                                  nombreServicioController.text;
+
                                               _controller.updateEmpleado(
                                                   _empleadoModel);
                                               setState(() {
@@ -323,6 +330,10 @@ class _BodyProfileState extends State<BodyProfile>
                                                       ?.currerEmpleadoModel
                                                       ?.tarifa
                                                       .toString();
+                                              nombreServicioController.text =
+                                                  _controller
+                                                      ?.currerEmpleadoModel
+                                                      ?.nombreServicio;
                                               _status = true;
                                             });
                                           },

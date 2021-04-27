@@ -46,6 +46,8 @@ class _BodyNegocioState extends State<BodyNegocio>
     empresaController.text = _controller?.currerEmpleadoModel?.empresa;
     descripcionController.text = _controller?.currerEmpleadoModel?.descripcion;
     tarifaController.text = _controller?.currerEmpleadoModel?.tarifa.toString();
+    nombreServicioController.text =
+        _controller?.currerEmpleadoModel?.nombreServicio;
     _cargarInsumos(idEmpleado);
     super.initState();
   }
@@ -78,6 +80,47 @@ class _BodyNegocioState extends State<BodyNegocio>
                                   fontSize: 18.0, fontWeight: FontWeight.bold),
                             ),
                             _status ? _getEditIcon() : Container()
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                child: Text(
+                                  'Nombre del Servicio',
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              flex: 2,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 10.0),
+                                child: TextFormField(
+                                  controller: nombreServicioController,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'El campo no puede ser vacio.';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                      hintText: "Nombre de tu servicio"),
+                                  enabled: !_status,
+                                ),
+                              ),
+                              flex: 2,
+                            ),
                           ],
                         ),
                         Row(
@@ -206,6 +249,8 @@ class _BodyNegocioState extends State<BodyNegocio>
                                                       tarifaController.text);
                                               _empleadoModel.empresa =
                                                   empresaController.text;
+                                              _empleadoModel.nombreServicio =
+                                                  nombreServicioController.text;
                                               _controller.updateEmpleado(
                                                   _empleadoModel);
                                               setState(() {
@@ -229,6 +274,10 @@ class _BodyNegocioState extends State<BodyNegocio>
                                           color: Colors.red,
                                           onPressed: () {
                                             setState(() {
+                                              nombreServicioController.text =
+                                                  _controller
+                                                      ?.currerEmpleadoModel
+                                                      ?.nombreServicio;
                                               nameController.text = _controller
                                                   ?.currerEmpleadoModel?.nombre;
                                               lastnameController.text =
