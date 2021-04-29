@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:life_point_empleado/controllers/auth/auth_contoller.dart';
 import 'package:life_point_empleado/models/empleado_model.dart';
 import 'package:life_point_empleado/provider/empleado/empleado_repository.dart';
 import 'package:life_point_empleado/screens/ui.dart';
 
 class HomeController extends GetxController {
+  final AuthController authController = Get.find();
   final EmpleadoRepository empleadoRepository = EmpleadoRepository();
   final empleadoID = GetStorage();
   int currentEmpleadoId;
@@ -18,6 +20,7 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     getCurrentEmpleado();
+    ever(authController.userID, handleAuthChanged);
     super.onReady();
   }
 
@@ -44,9 +47,10 @@ class HomeController extends GetxController {
   }
 
   void logOut() {
-    empleadoID
-        .remove("empleadoID")
-        .then((value) => Get.offAll(() => LoginUI()));
+    empleadoID.remove("empleadoID").then((value) {
+      authController.userID.value = null;
+      Get.offAll(() => LoginUI());
+    });
   }
 
   void getCurrentEmpleado() async {

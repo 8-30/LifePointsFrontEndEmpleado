@@ -27,6 +27,8 @@ class AuthController extends GetxController with Auth {
           usernameController.text.trim(), passwordController.text.trim());
       if (response != null) {
         if (response.data["usuario"] == usernameController.text.trim()) {
+          usernameController.clear();
+          passwordController.clear();
           print("---------AUTENTICACION CORRECTA---------------------");
           userID.value = response.data["idPersona"];
           await empleadoIDStorage.write(
@@ -58,10 +60,10 @@ class AuthController extends GetxController with Auth {
   }
 
   void getUserAuth() {
-    int empleadoID = empleadoIDStorage.read("empleadoID");
-    print("simon" + empleadoID.toString());
-    if (empleadoID != null) {
-      Get.offAll(() => HomeUI());
+    userID.value = empleadoIDStorage.read("empleadoID");
+    print("Se econtro un usuario: ${userID.value}");
+    if (userID.value != null) {
+      Get.offAll(() => HomeUI(), binding: HomeBinding());
     } else {
       print("USUARIO NO AUTENTICADO");
     }
