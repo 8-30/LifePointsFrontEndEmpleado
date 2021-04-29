@@ -1,8 +1,12 @@
+import 'dart:io';
+import 'package:path/path.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:life_point_empleado/models/person_model.dart';
 import 'package:life_point_empleado/models/empleado_model.dart';
 
 class EmpleadoApiProvider {
+  final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
   final String _endpoint = "http://lifepoints.herokuapp.com/api/empleado/";
   final Dio _dio = Dio();
 
@@ -32,6 +36,19 @@ class EmpleadoApiProvider {
     }
   }
 
+  Future<dynamic> autenticacionEmpleado(
+      String usuario, String contrasenia) async {
+    try {
+      Response response = await _dio.post(_endpoint + "/autenticacion",
+          data: {"usuario": usuario, "contrasenia": contrasenia});
+      print(response.data["idPersona"]);
+      return response;
+    } catch (error) {
+      print("Exception occured: $error ");
+      return null;
+    }
+  }
+
   Future<EmpleadoModel> getEmpleado(int uid) async {
     print(_endpoint + uid.toString());
     try {
@@ -43,8 +60,12 @@ class EmpleadoApiProvider {
     }
   }
 
-  Future<dynamic> putEmpleado(EmpleadoModel model) async {
+  Future<dynamic> putEmpleado(EmpleadoModel model, File file) async {
     try {
+      if (file != null) {
+        print("AQUI ESTOY");
+        model.foto = await uploadImage(file, model.usuario);
+      }
       print(model.toJson());
       Response response = await _dio
           .put(_endpoint + model.idEmpleado.toString(), data: model.toJson());
@@ -53,5 +74,17 @@ class EmpleadoApiProvider {
       print("Exception occured: $error");
       return null;
     }
+  }
+
+  Future<dynamic> uploadImage(File file, String userName) async {
+    return await firebaseStorage
+        .ref()
+        .child("empleado")
+        .child(userName)
+        .child('${basename(userName)}')
+        .putFile(file)
+        .then((value) {
+      return value.ref.getDownloadURL();
+    });
   }
 }

@@ -1,10 +1,14 @@
+import 'dart:io';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:life_point_empleado/controllers/auth/auth.dart';
 import 'package:life_point_empleado/controllers/controllers.dart';
 import 'package:life_point_empleado/models/empleado_model.dart';
-import 'package:life_point_empleado/screens/widgets/avatar.dart';
+import 'package:life_point_empleado/screens/profile/widgets/upload_logo.dart';
 
 class BodyProfile extends StatefulWidget {
   const BodyProfile({Key key}) : super(key: key);
@@ -18,9 +22,19 @@ class _BodyProfileState extends State<BodyProfile>
   bool _status = true;
   final _formKey = GlobalKey<FormState>();
   final HomeController _controller = Get.find();
+  final picker = ImagePicker();
+  File imageFile;
+  //? Este es el archivo para subir el repositorio de almacenamiento externo
+  //? Cuando Guarde de devolver el valor el url de la foto
+
   EmpleadoModel _empleadoModel = EmpleadoModel();
   @override
   void initState() {
+    setValues();
+    super.initState();
+  }
+
+  void setValues() {
     nameController.text = _controller?.currerEmpleadoModel?.nombre;
     lastnameController.text = _controller?.currerEmpleadoModel?.apellido;
     emailController.text = _controller?.currerEmpleadoModel?.email;
@@ -32,7 +46,29 @@ class _BodyProfileState extends State<BodyProfile>
     tarifaController.text = _controller?.currerEmpleadoModel?.tarifa.toString();
     nombreServicioController.text =
         _controller?.currerEmpleadoModel?.nombreServicio;
-    super.initState();
+  }
+
+  Future<void> pickImage(ImageSource source, BuildContext context) async {
+    Navigator.pop(context);
+    try {
+      final pickedFile = await picker.getImage(source: source);
+      File cropped = await ImageCropper.cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 100,
+        maxWidth: 700,
+        maxHeight: 700,
+        compressFormat: ImageCompressFormat.png,
+        androidUiSettings: AndroidUiSettings(
+          backgroundColor: Colors.white,
+        ),
+      );
+      setState(() {
+        imageFile = cropped;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -45,7 +81,12 @@ class _BodyProfileState extends State<BodyProfile>
           children: [
             Column(
               children: [
-                Avatar(),
+                UploadPhoto(
+                  photURL: _controller?.currerEmpleadoModel?.foto,
+                  image: imageFile,
+                  press: () => buildShowMaterialModalBottomSheet(context),
+                  enable: _status,
+                ),
                 Text("¡Hola!"),
                 Text(
                   _controller?.currerEmpleadoModel?.usuario,
@@ -158,7 +199,6 @@ class _BodyProfileState extends State<BodyProfile>
                                 hintText: "178216849683",
                               ),
                               enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ],
                         ),
@@ -182,7 +222,6 @@ class _BodyProfileState extends State<BodyProfile>
                                 return null;
                               },
                               enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ],
                         ),
@@ -207,7 +246,6 @@ class _BodyProfileState extends State<BodyProfile>
                                 return null;
                               },
                               enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ],
                         ),
@@ -231,7 +269,6 @@ class _BodyProfileState extends State<BodyProfile>
                                 return null;
                               },
                               enabled: !_status,
-                              autofocus: !_status,
                             ),
                           ],
                         ),
@@ -276,7 +313,7 @@ class _BodyProfileState extends State<BodyProfile>
                                                   nombreServicioController.text;
 
                                               _controller.updateEmpleado(
-                                                  _empleadoModel);
+                                                  _empleadoModel, imageFile);
                                               setState(() {
                                                 _status = true;
                                               });
@@ -298,43 +335,8 @@ class _BodyProfileState extends State<BodyProfile>
                                           color: Colors.red,
                                           onPressed: () {
                                             setState(() {
-                                              nameController.text = _controller
-                                                  ?.currerEmpleadoModel?.nombre;
-                                              lastnameController.text =
-                                                  _controller
-                                                      ?.currerEmpleadoModel
-                                                      ?.apellido;
-                                              emailController.text = _controller
-                                                  ?.currerEmpleadoModel?.email;
-                                              phoneNumberController.text =
-                                                  _controller
-                                                      ?.currerEmpleadoModel
-                                                      ?.telefono;
-                                              ciController.text = _controller
-                                                  ?.currerEmpleadoModel
-                                                  ?.credencial;
-                                              directionController.text =
-                                                  _controller
-                                                      ?.currerEmpleadoModel
-                                                      ?.direccion;
-                                              empresaController.text =
-                                                  _controller
-                                                      ?.currerEmpleadoModel
-                                                      ?.empresa;
-                                              descripcionController.text =
-                                                  _controller
-                                                      ?.currerEmpleadoModel
-                                                      ?.descripcion;
-                                              tarifaController.text =
-                                                  _controller
-                                                      ?.currerEmpleadoModel
-                                                      ?.tarifa
-                                                      .toString();
-                                              nombreServicioController.text =
-                                                  _controller
-                                                      ?.currerEmpleadoModel
-                                                      ?.nombreServicio;
                                               _status = true;
+                                              setValues();
                                             });
                                           },
                                           shape: RoundedRectangleBorder(
@@ -378,6 +380,45 @@ class _BodyProfileState extends State<BodyProfile>
           _status = false;
         });
       },
+    );
+  }
+
+  Future buildShowMaterialModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+          child: Row(
+        children: [
+          SizedBox(
+            width: 20.0,
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: Icon(Icons.image),
+                iconSize: 40.0,
+                onPressed: () => pickImage(ImageSource.gallery, context),
+              ),
+              Text("Galeria"),
+            ],
+          ),
+          SizedBox(
+            width: 20.0,
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: Icon(Icons.camera),
+                iconSize: 40.0,
+                onPressed: () => pickImage(ImageSource.camera, context),
+              ),
+              Text("Camara"),
+            ],
+          ),
+        ],
+      )),
     );
   }
 }

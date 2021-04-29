@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -12,12 +14,6 @@ class HomeController extends GetxController {
   final empleadoID = GetStorage();
   int currentEmpleadoId;
   EmpleadoModel currerEmpleadoModel;
-
-  @override
-  void onInit() {
-    currentEmpleadoId = empleadoID.read("empleadoID");
-    super.onInit();
-  }
 
   @override
   void onReady() {
@@ -41,6 +37,12 @@ class HomeController extends GetxController {
         snackPosition: SnackPosition.BOTTOM);
   }
 
+  void handleAuthChanged(_userID) async {
+    print("Home ever uid: $_userID");
+    if (_userID != null)
+      currerEmpleadoModel = await empleadoRepository.getEmpleado(_userID);
+  }
+
   void logOut() {
     empleadoID
         .remove("empleadoID")
@@ -48,11 +50,12 @@ class HomeController extends GetxController {
   }
 
   void getCurrentEmpleado() async {
+    currentEmpleadoId = await empleadoID.read("empleadoID");
     currerEmpleadoModel =
         await empleadoRepository.getEmpleado(currentEmpleadoId);
   }
 
-  void updateEmpleado(EmpleadoModel model) async {
+  void updateEmpleado(EmpleadoModel model, File file) async {
     currerEmpleadoModel.nombre = model.nombre;
     currerEmpleadoModel.apellido = model.apellido;
     currerEmpleadoModel.email = model.email;
@@ -63,7 +66,8 @@ class HomeController extends GetxController {
     currerEmpleadoModel.nombreServicio = model.nombreServicio;
     currerEmpleadoModel.empresa = model.empresa;
     currerEmpleadoModel.tarifa = model.tarifa;
-    final data = await empleadoRepository.putEmpleado(currerEmpleadoModel);
+    final data =
+        await empleadoRepository.putEmpleado(currerEmpleadoModel, file);
     if (data == null) {
       Get.snackbar("ERROR", "NO SE PUDO ACTUALIZAR EL USUARIO",
           icon: Icon(

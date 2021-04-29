@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:life_point_empleado/controllers/auth/auth.dart';
+import 'package:life_point_empleado/controllers/home/home_binding.dart';
 import 'package:life_point_empleado/screens/home/home_ui.dart';
 import '../../provider/empleado/empleado_repository.dart';
 
@@ -13,6 +14,7 @@ class AuthController extends GetxController with Auth {
   RxList<String> addListCategories =
       ["Masculino", "Femenino", "Indefinido"].obs;
 
+  RxInt userID = RxInt();
   @override
   void onReady() {
     getUserAuth();
@@ -21,17 +23,25 @@ class AuthController extends GetxController with Auth {
 
   void loginButtom() async {
     try {
-      final personaModel = await _empleadoApiProvider.authEmpleado(
+      final response = await _empleadoApiProvider.autenticacionEmpleado(
           usernameController.text.trim(), passwordController.text.trim());
-      print(usernameController.text.trim() +
-          "CNON" +
-          passwordController.text.trim());
-      if (personaModel.usuario == usernameController.text.trim()) {
-        print("SE AUTENTICO EL SUSAIO: " + personaModel.usuario);
-        await empleadoIDStorage.write("empleadoID", personaModel.idPersona);
-        Get.offAll(() => HomeUI());
-      } else {
-        print("no auth");
+      if (response != null) {
+        if (response.data["usuario"] == usernameController.text.trim()) {
+          print("---------AUTENTICACION CORRECTA---------------------");
+          userID.value = response.data["idPersona"];
+          await empleadoIDStorage.write(
+            "empleadoID",
+            response.data["idPersona"],
+          );
+          Get.offAll(() => HomeUI(), binding: HomeBinding());
+        } else {
+          Get.snackbar(
+            "ERROR",
+            "USUARIO O CONTRASEÑA INCORRECTOS",
+            icon: Icon(Icons.close),
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
       }
     } catch (e) {
       Get.snackbar(

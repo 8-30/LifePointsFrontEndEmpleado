@@ -252,7 +252,7 @@ class _BodyNegocioState extends State<BodyNegocio>
                                               _empleadoModel.nombreServicio =
                                                   nombreServicioController.text;
                                               _controller.updateEmpleado(
-                                                  _empleadoModel);
+                                                  _empleadoModel, null);
                                               setState(() {
                                                 _status = true;
                                               });

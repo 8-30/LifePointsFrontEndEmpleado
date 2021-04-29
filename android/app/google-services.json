@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "917468570219",
+    "project_id": "lifepoints-82d30",
+    "storage_bucket": "lifepoints-82d30.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917468570219:android:ad304b6b42629113c6872e",
+        "android_client_info": {
+          "package_name": "com.lifepoint.life_point"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917468570219-iev0ool72hdt702rflrpa793eq4frn6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ8RR6VPTZOhJsXHkG9mBmXq3BbiMrroQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917468570219-iev0ool72hdt702rflrpa793eq4frn6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917468570219:android:887549b2ba25d7e8c6872e",
+        "android_client_info": {
+          "package_name": "com.lifepoint.life_point_empleado"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "917468570219-iev0ool72hdt702rflrpa793eq4frn6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ8RR6VPTZOhJsXHkG9mBmXq3BbiMrroQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917468570219-iev0ool72hdt702rflrpa793eq4frn6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
