@@ -17,6 +17,7 @@ class UsuarioModel extends PersonaModel {
     credencial,
     contrasenia,
     usuario,
+    notyKey,
     this.idUsuario,
     this.calificacion,
   });
@@ -37,6 +38,7 @@ class UsuarioModel extends PersonaModel {
     usuarioModel.credencial = json['persona']['credencial'];
     usuarioModel.contrasenia = json['persona']['contrasenia'];
     usuarioModel.usuario = json['persona']['usuario'];
+    usuarioModel.notyKey = json['persona']['notyKey'];
     return usuarioModel;
   }
 
@@ -62,5 +64,6 @@ class UsuarioModel extends PersonaModel {
         "credencial": credencial,
         "contrasenia": contrasenia,
         "usuario": usuario,
+        "notyKey": notyKey,
       };
 }

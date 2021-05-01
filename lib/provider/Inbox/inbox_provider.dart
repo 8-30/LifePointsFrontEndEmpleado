@@ -53,7 +53,7 @@ class InboxApiProvider {
     try {
       Response response = await _dio.get(_endpoint + id.toString());
       print(response);
-      return InboxModel.fromJson(response.data);
+      return InboxModel.fromJson(response.data["inbox"]);
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return null;

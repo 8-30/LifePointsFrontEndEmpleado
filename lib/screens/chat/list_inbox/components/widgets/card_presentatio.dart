@@ -8,11 +8,13 @@ class CardPresentation extends StatefulWidget {
   final InboxModel inbox;
   final PersonaModel persona;
   final String ultimoMensaje;
+  final bool estado;
   CardPresentation({
     Key key,
     this.inbox,
     this.persona,
     this.ultimoMensaje,
+    this.estado,
   }) : super(key: key);
 
   @override
@@ -57,6 +59,13 @@ class _CardPresentationState extends State<CardPresentation> {
                     ),
                   ],
                 ),
+                !widget.estado
+                    ? Container(
+                        child: new CircleAvatar(
+                        backgroundColor: Colors.red,
+                        radius: 5.0,
+                      ))
+                    : Container()
               ],
             )
           ],

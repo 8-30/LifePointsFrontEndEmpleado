@@ -8,6 +8,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:life_point_empleado/controllers/auth/auth_contoller.dart';
 import 'package:life_point_empleado/models/empleado_model.dart';
 import 'package:life_point_empleado/provider/empleado/empleado_repository.dart';
+import 'package:life_point_empleado/provider/notifications/push_notification_provider.dart';
 import 'package:life_point_empleado/screens/ui.dart';
 
 class HomeController extends GetxController {
@@ -16,6 +17,7 @@ class HomeController extends GetxController {
   final empleadoID = GetStorage();
   int currentEmpleadoId;
   EmpleadoModel currerEmpleadoModel;
+  final pushNotificationProvider = new PushNotificationProvider();
 
   @override
   void onReady() {
@@ -57,6 +59,10 @@ class HomeController extends GetxController {
     currentEmpleadoId = await empleadoID.read("empleadoID");
     currerEmpleadoModel =
         await empleadoRepository.getEmpleado(currentEmpleadoId);
+    pushNotificationProvider.initNotifications(currerEmpleadoModel);
+    pushNotificationProvider.mensajes.listen((event) {
+      //Get.to(() => ListInboxUI(), transition: Transition.fadeIn);
+    });
   }
 
   void updateEmpleado(EmpleadoModel model, File file) async {

@@ -74,4 +74,15 @@ class MensajeApiProvider {
       return false;
     }
   }
+
+  Future<bool> putMensaje(MensajeModel model) async {
+    try {
+      await _dio.put(_endpoint + model.idMensaje.toString(),
+          data: model.toJson());
+      return true;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return false;
+    }
+  }
 }
