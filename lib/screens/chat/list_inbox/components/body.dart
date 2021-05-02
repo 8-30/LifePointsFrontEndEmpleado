@@ -105,6 +105,7 @@ class _BodyListInboxState extends State<BodyListInbox> {
                                             } else {
                                               emisor =
                                                   snapshot2.data.nombre + ":";
+                                              estado = snapshot3.data[0].estado;
                                             }
                                           }
                                           return snapshot3.hasData
